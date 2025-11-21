@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DividerDefaults.Thickness
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -20,6 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +43,12 @@ fun FormIsian(
     OnSubmitButtonClicked: (MutableList<String>) -> Unit,
     modifier: Modifier = Modifier
 ){
+    //edit 2 : tambahkan 4 variable dibawah ini
+    var txtNama by rememberSaveable { mutableStateOf("") }
+    var txtAlamat by rememberSaveable { mutableStateOf("") }
+    var txtGender by rememberSaveable { mutableStateOf("") }
+    val listData: MutableList<String> = mutableListOf(txtNama, txtGender, txtAlamat)
+
     Scaffold (modifier= Modifier,
         {
             TopAppBar(
@@ -49,14 +60,18 @@ fun FormIsian(
         Column(modifier = Modifier.padding(isiRuang),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally) {
+            //edit 3 : value, onValueChange, selected,onClick
             OutlinedTextField(
-                value = "",
+                value = txtNama,
                 singleLine = true,
+                shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .width(250.dp),
                 label = {Text(text = "Nama Lengkap")},
-                onValueChange = {},
+                onValueChange = {
+                    txtNama = it
+                },
             )
             HorizontalDivider(modifier = Modifier
                 .padding(20.dp)
