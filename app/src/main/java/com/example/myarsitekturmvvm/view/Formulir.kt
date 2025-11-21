@@ -14,7 +14,6 @@ import androidx.compose.material3.DividerDefaults.Thickness
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -24,6 +23,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,31 +37,31 @@ import com.example.myarsitekturmvvm.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormIsian(
-    //jenisK:List<String> = listOf("Laki-laki","Perempuan"),
-    //OnSubmitBtnClick : () -> Unit
-    //edit 1 : parameter pilihanJK dan onSubmitButtonClicked
-    pilihanJK: List<String> ,
-    OnSubmitButtonClicked: (MutableList<String>) -> Unit,
+//    jenisK:List<String> = listOf("Laki-laki", "Perempuan"),
+//    OnSubmitBtnClick:() -> Unit
+    pilihanJK: List<String>,
+    onSubmitButtonClicked: (MutableList<String>) -> Unit,
     modifier: Modifier = Modifier
-){
-    //edit 2 : tambahkan 4 variable dibawah ini
+) {
     var txtNama by rememberSaveable { mutableStateOf("") }
-    var txtAlamat by rememberSaveable { mutableStateOf("") }
-    var txtGender by rememberSaveable { mutableStateOf("") }
+    var txtAlamat by remember { mutableStateOf("") }
+    var txtGender by remember { mutableStateOf("") }
     val listData: MutableList<String> = mutableListOf(txtNama, txtGender, txtAlamat)
 
-    Scaffold (modifier= Modifier,
+    Scaffold(
+        modifier = Modifier,
         {
             TopAppBar(
-                title = {Text(stringResource(id= R.string.home), color = Color.White)},
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    colorResource(id = R.color.teal_700))
-            ) }
-    ){ isiRuang ->
-        Column(modifier = Modifier.padding(isiRuang),
+                title = { Text(stringResource(id = R.string.home), color = Color.White) },
+                colors = TopAppBarDefaults.mediumTopAppBarColors(colorResource(id = R.color.teal_700))
+            )
+        }
+    ) { isiRuang ->
+        Column(
+            modifier = Modifier.padding(isiRuang),
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally) {
-            //edit 3 : value, onValueChange, selected,onClick
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             OutlinedTextField(
                 value = txtNama,
                 singleLine = true,
@@ -69,56 +69,58 @@ fun FormIsian(
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .width(250.dp),
-                label = {Text(text = "Nama Lengkap")},
+                label = { Text(text = "Nama Lengkap") },
                 onValueChange = {
                     txtNama = it
                 },
             )
-            HorizontalDivider(modifier = Modifier
-                .padding(20.dp)
-                .width(250.dp), thickness = Thickness, color = Color.Red)
+            HorizontalDivider(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .width(250.dp), thickness = Thickness, color = Color.Red
+            )
             Row {
-                pilihanJK.forEach {
-                        item->
+                pilihanJK.forEach { item ->
                     Row(modifier = Modifier.selectable(
                         selected = txtGender == item,
                         onClick = {
                             txtGender = item
                         }
                     ),
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
+                        verticalAlignment = Alignment.CenterVertically) {
                         RadioButton(
                             selected = txtGender == item,
-                            onClick = {txtGender = item}
+                            onClick = { txtGender = item }
                         )
                         Text(item)
                     }
                 }
             }
-            HorizontalDivider(modifier = Modifier
-                .padding(20.dp)
-                .width(250.dp),
+            HorizontalDivider(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .width(250.dp),
                 thickness = 1.dp,
                 color = Color.Red
             )
             OutlinedTextField(
                 value = txtAlamat,
                 singleLine = true,
-                shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .width(250.dp),
-                label = {Text(text = "Alamat Lengkap")},
+                label = { Text(text = "Alamat") },
                 onValueChange = {
                     txtAlamat = it
-                }
+                },
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(30.dp))
             Button(
-                modifier = Modifier.fillMaxWidth(1f),
+                modifier = Modifier
+                    .fillMaxWidth(1f)
+                    .padding(all = 25.dp),
                 enabled = txtAlamat.isNotEmpty(),
-                onClick = { OnSubmitButtonClicked(listData)}
-            ){
+                onClick = {onSubmitButtonClicked(listData)}
+            ) {
                 Text(stringResource(id = R.string.submit))
             }
         }

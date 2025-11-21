@@ -24,33 +24,38 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myarsitekturmvvm.R
+import com.example.myarsitekturmvvm.model.Siswa
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TampilData(
-    onBackBtnClick: () -> Unit,
-){
+    statusUiSiswa: Siswa,
+    onBackBtnClick: () -> Unit
+) {
     val items = listOf(
-        Pair(stringResource(id = R.string.nama_lengkap), "Contoh Nama"),
-        Pair(stringResource(id = R.string.jenis_kelamin), "Lainnya"),
-        Pair(stringResource(id = R.string.alamat), "Yogyakarta")
+        Pair(first = stringResource(id = R.string.nama_lengkap), second = statusUiSiswa.nama),
+        Pair(first = stringResource(id = R.string.jenis_kelamin), second = statusUiSiswa.gender),
+        Pair(first = stringResource(id = R.string.alamat), second = statusUiSiswa.alamat)
     )
+
     Scaffold(
-        topBar = {
+        modifier = Modifier,
+        {
             TopAppBar(
                 title = { Text(text = stringResource(id = R.string.tampil), color = Color.White) },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = colorResource(id = R.color.teal_700)
+                    colorResource(id = R.color.teal_700)
                 )
             )
         }
     ) { isiRuang ->
+
         Column(
             modifier = Modifier.padding(isiRuang),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
-                modifier = Modifier.padding(all = dimensionResource(id = R.dimen.padding_medium)),
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
                 verticalArrangement = Arrangement.spacedBy(
                     dimensionResource(id = R.dimen.padding_small)
                 )
@@ -83,4 +88,3 @@ fun TampilData(
         }
     }
 }
-
