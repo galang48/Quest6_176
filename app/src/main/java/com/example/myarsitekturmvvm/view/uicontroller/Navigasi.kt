@@ -35,16 +35,15 @@ fun DataApp(
             modifier = Modifier.padding(isiRuang)
         ) {
             composable(route = Navigasi.Formulirku.name) {
-                val konteks = LocalContext.current
                 FormIsian(
-                    pilihanJK = JenisK.map { id -> konteks
-                        .resources.getString(id) },
+                    pilihanJK = JenisK,
                     onSubmitButtonClicked = {
                         viewModel.setSiswa(it)
                         navController.navigate(Navigasi.Detail.name)
                     }
                 )
             }
+
 
             composable(route = Navigasi.Detail.name) {
                 TampilData(
