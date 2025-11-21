@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Button
 import androidx.compose.material3.DividerDefaults.Thickness
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -77,14 +78,21 @@ fun FormIsian(
                 .padding(20.dp)
                 .width(250.dp), thickness = Thickness, color = Color.Red)
             Row {
-                jenisK.forEach {
+                pilihanJK.forEach {
                         item->
-                    Row(verticalAlignment = Alignment.CenterVertically){
+                    Row(modifier = Modifier.selectable(
+                        selected = txtGender == item,
+                        onClick = {
+                            txtGender = item
+                        }
+                    ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
                         RadioButton(
-                            selected = false,
-                            onClick = {item}
+                            selected = txtGender == item,
+                            onClick = {txtGender = item}
                         )
-                        Text(text = item)
+                        Text(item)
                     }
                 }
             }
@@ -95,18 +103,21 @@ fun FormIsian(
                 color = Color.Red
             )
             OutlinedTextField(
-                value = "",
+                value = txtAlamat,
                 singleLine = true,
+                shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .width(250.dp),
-                label = {Text(text = "Alamat")},
-                onValueChange = {},
+                label = {Text(text = "Alamat Lengkap")},
+                onValueChange = {
+                    txtAlamat = it
+                }
             )
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             Button(
-                modifier = Modifier.fillMaxWidth(1f)
-                    .padding(all = 25.dp),
-                onClick = OnSubmitBtnClick
+                modifier = Modifier.fillMaxWidth(1f),
+                enabled = txtAlamat.isNotEmpty(),
+                onClick = { OnSubmitButtonClicked(listData)}
             ){
                 Text(stringResource(id = R.string.submit))
             }
